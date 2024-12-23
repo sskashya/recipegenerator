@@ -45,7 +45,7 @@ def ingredient_sub(ingredient_name):
         print(f"Error: {response.status_code}")
         print(response.text)
 
-def recipe_search(prompt, number = 2, diet = None, exclude_ingredients = None, intolerances = None, offset = None):
+def recipe_search(prompt, number = 5, diet = None, exclude_ingredients = None, intolerances = None, offset = None):
     url = "https://api.spoonacular.com/recipes/complexSearch"
     params = {
         "query": prompt,
@@ -64,7 +64,7 @@ def recipe_search(prompt, number = 2, diet = None, exclude_ingredients = None, i
 
     if response.status_code == 200:
         recipes = response.json()
-        st.write(recipes)
+        #st.write(recipes)
         for recipe in recipes['results']:
             st.header(f"Recipe: {recipe['title']}")
             st.write(f"ID: {recipe['id']}")
@@ -88,10 +88,12 @@ def recipe_search(prompt, number = 2, diet = None, exclude_ingredients = None, i
                 save_recipe = st.button("Save", icon = '\U0001F4BE', key = recipe['id'])
             with col2:
                 shopping_cart = st.button("Add to Grocery List", icon = '\U0001F6D2', key = recipe['title'])
+            #with col3:
+                #ing_sub = st.button("Substitute for Ingredients")
             st.write("-" * 40)
     else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
+        st.warning(f"Error: {response.status_code}")
+        st.warning(response.text)
 
 def food_joke():
     url = "https://api.spoonacular.com/food/jokes/random"
@@ -103,15 +105,20 @@ def food_joke():
         st.write(joke['text'], color = "blue")
         st.write("_" * 40)
     else:
-        st.write(f"Error: {response.status_code}")
-        st.write(response.text)
+        st.warning(f"Error: {response.status_code}")
+        st.warning(response.text)
 
 
-st.title("Welcome Back")
+st.title("Welcome Back!")
 st.header("Here is your food joke of the day")
 
 food_joke()
+st.write("-"*40)
 
-#findbyingredients("Meatballs")
-#meal = st.text("enter query here")
-recipe_search('Burger')
+search = st.text_input("Search for meals here")
+if search:
+    diet = st.selectbox("Select your Diet Option", ["None", "Gluten Free", "Pescetarian", "Vegan", "Vegetarian", "Ketogenic"])
+    if diet != 'None':
+        recipe_search(search, diet = diet)
+    else:
+        recipe_search(search)
