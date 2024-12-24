@@ -177,14 +177,14 @@ def food_joke():
         st.warning(f"Error: {response.status_code}")
         st.warning(response.text)
 
-if 'username' in st.session_state:
+if 'username' not in st.session_state:
     st.title("Welcome Back!")
     st.header("Here is your food joke of the day")
 
-    client = OpenAI(api_key = st.secrets["OPENAI_API_KEY"])
-    messages = {"role":"system", "content": f"You are a knowledgeable and funny food bot. Give the chef a food and culinary related joke"}
-    response = client.chat.completions.create(
-            model="gpt-4o",
+    cookingclient = OpenAI(api_key = st.secrets["OPENAI_API_KEY"])
+    messages = [{"role":"system", "content": f"You are a knowledgeable and funny food bot. Give the chef a food and culinary related joke"}]
+    response = cookingclient.chat.completions.create(
+            model="gpt-4",
             messages = messages,
             stream = True,
             temperature = 0

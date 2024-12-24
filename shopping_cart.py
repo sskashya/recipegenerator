@@ -30,9 +30,9 @@ if 'username' in st.session_state:
     
     if col3 and col4:
         client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-        messages = {"role":"system", "content": f"You are a knowledgeable food bot. Provide alternative ingredients for the ingredient provided by the chef. The ingredient provided by the chef is {col3}"}
+        messages = [{"role":"system", "content": f"You are a knowledgeable food bot. Provide alternative ingredients for the ingredient provided by the chef. The ingredient provided by the chef is {col3}"}]
         response = client.chat.completions.create(
-                model="gpt-4o",
+                model="gpt-4o-mini",
                 messages = messages,
                 stream = True,
                 temperature = 0
