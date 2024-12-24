@@ -11,9 +11,18 @@ if 'username' in st.session_state:
     file_path = f"grocery_file/prelim_shopping_list_{st.session_state.username}.json"
     with open(file_path, 'r') as f:
         prelim_grocery = json.load(f)
+    ingredients_data = []
+    for recipe in prelim_grocery:
+        for ingredient in recipe['ingredients']:  
+            ingredients_data.append({
+                "ingredient": ingredient['original'],
+                "picked_up": False  
+            })
+
     editable_data = st.data_editor(
-        prelim_grocery,
+        ingredients_data,
         column_config={
+            "ingredient": st.column_config.TextColumn("Ingredient"),
             "picked_up": st.column_config.CheckboxColumn(
                     "In Cart",
                     default=False,
