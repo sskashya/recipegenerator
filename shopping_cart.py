@@ -22,6 +22,8 @@ if 'username' in st.session_state:
                 "ingredient": ingredient,
                 "picked_up": False  
             })
+    if "ingredients_data" not in st.session_state:
+        st.session_state["ingredients_data"] = ingredients_data
 
     editable_data = st.data_editor(
         ingredients_data,
@@ -64,8 +66,7 @@ if 'username' in st.session_state:
         editable_df.to_csv("recipes.csv", index=False)
         st.success("Grocery List has been saved!")
     if clear_list:
-        editable_df = pd.DataFrame(columns=["username", "date", "recipe name", "ingredient", "picked_up"])
-        st.session_state["data_editor"] = editable_df
+        st.session_state["ingredients_data"] = []
     
     logout = st.button("Logout")
     if logout:
