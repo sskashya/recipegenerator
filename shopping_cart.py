@@ -12,6 +12,7 @@ if 'username' in st.session_state:
     with open(file_path, 'r') as f:
         prelim_grocery = json.load(f)
     ingredients_data = []
+    st.write(prelim_grocery)
     for recipe in prelim_grocery:
         for ingredient in recipe['ingredients']:  
             ingredients_data.append({
