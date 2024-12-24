@@ -8,7 +8,7 @@ import os
 
 if 'username' in st.session_state:
     st.header("Shopping Cart \U0001F6D2")
-    file_path: f"grocery_file/prelim_shopping_list_{st.session_state.username}.json"
+    file_path = f"grocery_file/prelim_shopping_list_{st.session_state.username}.json"
     with open(file_path, 'r') as f:
         prelim_grocery = json.load(f)
     editable_data = st.data_editor(
