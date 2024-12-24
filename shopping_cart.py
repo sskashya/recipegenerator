@@ -37,7 +37,7 @@ if 'username' in st.session_state:
                 stream = True,
                 temperature = 0
                 )
-
+        st.write_stream(response)
     st.write("-"*40)
     col1, col2 = st.columns(2, gap = "medium")
     with col1:

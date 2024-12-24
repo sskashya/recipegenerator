@@ -189,7 +189,7 @@ if 'username' in st.session_state:
             stream = True,
             temperature = 0
             )
-
+    st.write_stream(response)
     st.write("-"*40)
 
     search = st.text_input("Search for meals here")
