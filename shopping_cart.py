@@ -38,6 +38,7 @@ if st.session_state.username:
                 temperature = 0
                 )
 
+    st.write("-"*40)
     col1, col2 = st.columns(2, gap = "medium")
     with col1:
         save_list = st.button("Save", icon = '\U0001F6D2')
