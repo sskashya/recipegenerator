@@ -103,22 +103,22 @@ def recipe_search(prompt, number = 5, diet = None, exclude_ingredients = None, i
                             memories = []
                 else:
                     memories = []
-                for recipe in recipes:
-                    recipe_hist = {
-                        "username": st.session_state.username,
-                        "date": datetime.now().date(),
-                        "recipe name": recipe['title'],
-                        "recipe id": recipe['id']
-                    }
+                
+                recipe_hist = {
+                    "username": st.session_state.username,
+                    "date": datetime.now().date(),
+                    "recipe name": recipe['title'],
+                    "recipe id": recipe['id']
+                }
 
-                    memories = [
-                        memory for memory in memories
-                        if not (
-                            memory['recipe id'] == recipe_hist['recipe id'] and
-                            memory['date'] == recipe_hist['date']
-                        )
-                    ]
-                    memories.append(recipe_hist)
+                memories = [
+                    memory for memory in memories
+                    if not (
+                        memory['recipe id'] == recipe_hist['recipe id'] and
+                        memory['date'] == recipe_hist['date']
+                    )
+                ]
+                memories.append(recipe_hist)
 
                 with open(log_file, 'w') as f:
                     json.dump(memories, f, indent=2)
@@ -137,26 +137,27 @@ def recipe_search(prompt, number = 5, diet = None, exclude_ingredients = None, i
                             groceries = []
                 else:
                     groceries = []
-                for recipe in recipes:
-                    grocery_list = {
-                        "recipe name": recipe['title'],
-                        "recipe id": recipe['id'],
-                        "ingredients": [ingredient['name'] for ingredient in recipe['missedIngredients']]
-                    }
+                
+                grocery_list = {
+                    "username": st.session_state.username,
+                    "date": datetime.now().date(),
+                    "recipe name": recipe['title'],
+                    "recipe id": recipe['id'],
+                    "ingredients": [ingredient['original'] for ingredient in recipe['missedIngredients']]
+                }
 
-                    memories = [
-                        memory for memory in memories
-                        if not (
-                            groceries['recipe id'] == grocery_list['recipe id'] and
-                            groceries['recipe name'] == grocery_list['recipe name']
-                        )
-                    ]
-                    memories.append(grocery_list)
+                groceries = [
+                    grocery for grocery in groceries
+                    if not (
+                        grocery['recipe id'] == grocery_list['recipe id'] and
+                        grocery['recipe name'] == grocery_list['recipe name']
+                    )
+                ]
+                groceries.append(grocery_list)
 
                 with open(log_file, 'w') as f:
                     json.dump(memories, f, indent=2)
                 st.success("Ingredients added to Shopping List!")
-
 
     else:
         st.warning(f"Error: {response.status_code}")
@@ -186,7 +187,7 @@ if st.session_state.username:
     if search:
         diet = st.selectbox("Select your Diet Option", ["None", "Gluten Free", "Pescetarian", "Vegan", "Vegetarian", "Ketogenic"])
         if diet != 'None':
-            recipe_search(search, diet = diet)
+            recipe_search(search, diet = diet.lower())
         
         else:
             recipe_search(search)
