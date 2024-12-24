@@ -3,7 +3,7 @@ from openai import OpenAI
 import requests
 import json
 import os
-import datetime
+from datetime import datetime
 
 api_key = st.secrets['SPOON_API_KEY']
 
