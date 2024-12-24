@@ -156,7 +156,7 @@ def recipe_search(prompt, number = 5, diet = None, exclude_ingredients = None, i
                     groceries.append(grocery_list)
 
                     with open(log_file, 'w') as f:
-                        json.dump(memories, f, indent=2)
+                        json.dump(groceries, f, indent=2)
                     st.success("Ingredients added to Shopping List!")
         else:
             st.write("No recipes are available for your search parameters")
