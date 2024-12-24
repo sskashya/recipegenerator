@@ -29,9 +29,9 @@ if 'username' in st.session_state:
     with col4:
         sub = st.button("Generate Alternative Ingredients")
     
-    if col3 and col4:
+    if ingredient and sub:
         client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-        messages = [{"role":"system", "content": f"You are a knowledgeable food bot. Provide alternative ingredients for the ingredient provided by the chef. The ingredient provided by the chef is {col3}"}]
+        messages = [{"role":"system", "content": f"You are a knowledgeable food bot. Provide alternative ingredients for the ingredient provided by the chef. The ingredient provided by the chef is {ingredient}"}]
         response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages = messages,
