@@ -108,17 +108,27 @@ def food_joke():
         st.warning(f"Error: {response.status_code}")
         st.warning(response.text)
 
+if st.session_state.username:
+    st.title("Welcome Back!")
+    st.header("Here is your food joke of the day")
 
-st.title("Welcome Back!")
-st.header("Here is your food joke of the day")
+    food_joke()
+    st.write("-"*40)
 
-food_joke()
-st.write("-"*40)
+    search = st.text_input("Search for meals here")
+    if search:
+        diet = st.selectbox("Select your Diet Option", ["None", "Gluten Free", "Pescetarian", "Vegan", "Vegetarian", "Ketogenic"])
+        if diet != 'None':
+            recipe_search(search, diet = diet)
+        else:
+            recipe_search(search)
 
-search = st.text_input("Search for meals here")
-if search:
-    diet = st.selectbox("Select your Diet Option", ["None", "Gluten Free", "Pescetarian", "Vegan", "Vegetarian", "Ketogenic"])
-    if diet != 'None':
-        recipe_search(search, diet = diet)
-    else:
-        recipe_search(search)
+
+
+
+    logout = st.button("Logout")
+    if logout:
+        st.session_state.username = None
+
+else:
+    st.warning("Please login to continue")
