@@ -14,7 +14,7 @@ if 'username' in st.session_state:
     ingredients_data = []
     #st.write(prelim_grocery)
     for recipe in prelim_grocery:
-        for ingredient in recipe['ingredients']:  
+        for ingredient in recipe['ingredients']:   
             ingredients_data.append({
                 "username": recipe['username'],
                 "recipe_name": recipe['title'],  
