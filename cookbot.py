@@ -66,7 +66,7 @@ def recipe_search(prompt, number=5, diet=None, exclude_ingredients=None, intoler
         "addRecipeInstructions": True,
         "ignorePantry": False,
         "offset": offset,
-        "apiKey": st.secrets["SPOONACULAR_API_KEY"]  # Make sure to use the correct key
+        "apiKey": st.secrets["SPOON_API_KEY"]  # Make sure to use the correct key
     }
     
     response = requests.get(url, params=params)
