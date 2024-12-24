@@ -59,8 +59,8 @@ def login_attempt(login, user_data):
                     else:
                         st.warning("Passwords do not match")
     
-st.title("Welcome to the workout app")
-st.header("Sign up to build workouts or Login to access your account")
+st.title("Welcome to the recipe app")
+st.header("Sign up to find recipes or Login to access your account")
 
 login = st.selectbox("Login/ Sign Up", ['Select an option', 'Login', 'Sign Up'])
 
