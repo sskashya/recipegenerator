@@ -176,7 +176,7 @@ def food_joke():
         st.warning(f"Error: {response.status_code}")
         st.warning(response.text)
 
-if st.session_state.username:
+if 'username' in st.session_state:
     st.title("Welcome Back!")
     st.header("Here is your food joke of the day")
 
