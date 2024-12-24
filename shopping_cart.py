@@ -64,8 +64,8 @@ if 'username' in st.session_state:
         editable_df.to_csv("recipes.csv", index=False)
         st.success("Grocery List has been saved!")
     if clear_list:
-        data = pd.DataFrame(columns=["username", "date", "recipe name", "ingredient", "picked_up"])
-        st.session_state["data_editor"] = data
+        editable_df = pd.DataFrame(columns=["username", "date", "recipe name", "ingredient", "picked_up"])
+        st.session_state["data_editor"] = editable_df
     
     logout = st.button("Logout")
     if logout:
