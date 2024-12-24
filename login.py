@@ -79,7 +79,7 @@ if login == 'Sign Up':
 elif login == 'Login':
     user = login_attempt(login, user_data)
     if 'username' not in st.session_state:
-        st.session_state.username = [user]
+        st.session_state.username = user
     else:
-        st.session_state.username = [user]
+        st.session_state.username = user
     #st.write(st.session_state.username[0])
