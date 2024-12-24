@@ -26,7 +26,7 @@ if 'username' in st.session_state:
         st.session_state["ingredients_data"] = ingredients_data
 
     editable_data = st.data_editor(
-        st.session_state.ingredients_data,
+        ingredients_data,
         column_config={
             "ingredient": st.column_config.TextColumn("Ingredient"),
             "picked_up": st.column_config.CheckboxColumn(
@@ -66,7 +66,7 @@ if 'username' in st.session_state:
         editable_df.to_csv("recipes.csv", index=False)
         st.success("Grocery List has been saved!")
     if clear_list:
-        st.session_state["ingredients_data"] = []
+        ingredients_data = []
     
     logout = st.button("Logout")
     if logout:
