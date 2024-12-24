@@ -66,7 +66,6 @@ if 'username' in st.session_state:
     if clear_list:
         data = pd.DataFrame(columns=["username", "date", "recipe name", "ingredient", "picked_up"])
         st.session_state["data_editor"] = data
-        st.experimental_rerun()
     
     logout = st.button("Logout")
     if logout:
