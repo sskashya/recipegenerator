@@ -9,7 +9,7 @@ import os
 if 'username' in st.session_state:
     st.header("Shopping Cart \U0001F6D2")
     file_path: f"grocery_file/prelim_shopping_list_{st.session_state.username}.json"
-    prelim_grocery = json.load(f"grocery_file/prelim_shopping_list_{st.session_state.username}.json")
+    prelim_grocery = json.load("prelim_shopping_list_{st.session_state.username}.json")
     editable_data = st.data_editor(
         prelim_grocery,
         column_config={
