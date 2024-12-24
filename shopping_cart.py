@@ -18,7 +18,6 @@ if 'username' in st.session_state:
             ingredients_data.append({
                 "username": recipe['username'],
                 "recipe_name": recipe['recipe name'],  
-                "recipe_id": recipe['recipe id'],
                 "ingredient": ingredient,
                 "picked_up": False  
             })
