@@ -47,7 +47,13 @@ def ingredient_sub(ingredient_name):
         print(f"Error: {response.status_code}")
         print(response.text)
 
-def recipe_search(prompt, number = 5, diet = None, exclude_ingredients = None, intolerances = None, offset = None):
+import os
+import json
+import requests
+import streamlit as st
+from datetime import datetime
+
+def recipe_search(prompt, number=5, diet=None, exclude_ingredients=None, intolerances=None, offset=None):
     url = "https://api.spoonacular.com/recipes/complexSearch"
     params = {
         "query": prompt,
@@ -60,8 +66,9 @@ def recipe_search(prompt, number = 5, diet = None, exclude_ingredients = None, i
         "addRecipeInstructions": True,
         "ignorePantry": False,
         "offset": offset,
-        "apiKey":api_key
+        "apiKey": st.secrets["SPOONACULAR_API_KEY"]  # Make sure to use the correct key
     }
+    
     response = requests.get(url, params=params)
 
     if response.status_code == 200:
@@ -71,7 +78,9 @@ def recipe_search(prompt, number = 5, diet = None, exclude_ingredients = None, i
                 st.header(f"Recipe: {recipe['title']}")
                 st.write(f"ID: {recipe['id']}")
                 st.image(f"{recipe['image']}")
-                if st.button:
+                
+                # Correct button logic
+                if st.button(f"Show More Info for {recipe['title']}", key=f"info_{recipe['id']}"):
                     expanded_recipe = st.expander("More Information")
                     expanded_recipe.write("-" * 40)
                     expanded_recipe.subheader(f"Servings: {recipe['servings']}")
@@ -85,12 +94,16 @@ def recipe_search(prompt, number = 5, diet = None, exclude_ingredients = None, i
                             expanded_recipe.subheader(f"{instructions['name']}\n ")
                         for steps in instructions['steps']:
                             expanded_recipe.write(f" Step: {steps['number']}\n - {steps['step']}\n ")
-                col1, col2 = st.columns(2, gap = 'medium')
+
+                # Columns for Save and Add to Grocery List buttons
+                col1, col2 = st.columns(2, gap='medium')
                 with col1:
-                    save_recipe = st.button("Save", icon = '\U0001F4BE', key = recipe['id'])
+                    save_recipe = st.button("Save 🗃️", key=f"save_{recipe['id']}")
                 with col2:
-                    shopping_cart = st.button("Add to Grocery List", icon = '\U0001F6D2', key = recipe['title'])
+                    shopping_cart = st.button("Add to Grocery List 🛒", key=f"cart_{recipe['id']}")
                 st.write("-" * 40)
+
+                # Save recipe logic
                 if save_recipe:
                     os.makedirs('file', exist_ok=True)
                     log_file = f"file/recipe_hist_{st.session_state.username}.json"
@@ -124,7 +137,7 @@ def recipe_search(prompt, number = 5, diet = None, exclude_ingredients = None, i
                         json.dump(memories, f, indent=2)
                     st.success("Recipe successfully saved!")
 
-                
+                # Add to grocery list logic
                 if shopping_cart:
                     os.makedirs('grocery_file', exist_ok=True)
                     log_file = f"grocery_file/prelim_shopping_list_{st.session_state.username}.json"
@@ -137,7 +150,7 @@ def recipe_search(prompt, number = 5, diet = None, exclude_ingredients = None, i
                                 groceries = []
                     else:
                         groceries = []
-                    
+
                     grocery_list = {
                         "username": st.session_state.username,
                         "date": datetime.now().date(),
@@ -158,8 +171,9 @@ def recipe_search(prompt, number = 5, diet = None, exclude_ingredients = None, i
                     with open(log_file, 'w') as f:
                         json.dump(groceries, f, indent=2)
                     st.success("Ingredients added to Shopping List!")
+
         else:
-            st.write("No recipes are available for your search parameters")
+            st.write("No recipes are available for your search parameters.")
     else:
         st.warning(f"Error: {response.status_code}")
         st.warning(response.text)
