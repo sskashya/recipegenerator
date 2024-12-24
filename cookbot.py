@@ -6,7 +6,6 @@ import os
 import datetime
 
 api_key = st.secrets['SPOON_API_KEY']
-openai_client = st.secrets['OPENAI_API_KEY']
 
 def findbyingredients(ingredients = []):
     url = "https://api.spoonacular.com/recipes/findByIngredients"
