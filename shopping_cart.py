@@ -26,7 +26,7 @@ if 'username' in st.session_state:
         st.session_state["ingredients_data"] = ingredients_data
 
     editable_data = st.data_editor(
-        ingredients_data,
+        st.session_state.ingredients_data,
         column_config={
             "ingredient": st.column_config.TextColumn("Ingredient"),
             "picked_up": st.column_config.CheckboxColumn(
