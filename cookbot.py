@@ -1,6 +1,9 @@
 import streamlit as st
 #import openai
 import requests
+import json
+import os
+import datetime
 
 api_key = st.secrets['SPOON_API_KEY']
 openai_client = st.secrets['OPENAI_API_KEY']
@@ -64,7 +67,6 @@ def recipe_search(prompt, number = 5, diet = None, exclude_ingredients = None, i
 
     if response.status_code == 200:
         recipes = response.json()
-        #st.write(recipes)
         for recipe in recipes['results']:
             st.header(f"Recipe: {recipe['title']}")
             st.write(f"ID: {recipe['id']}")
@@ -88,9 +90,74 @@ def recipe_search(prompt, number = 5, diet = None, exclude_ingredients = None, i
                 save_recipe = st.button("Save", icon = '\U0001F4BE', key = recipe['id'])
             with col2:
                 shopping_cart = st.button("Add to Grocery List", icon = '\U0001F6D2', key = recipe['title'])
-            #with col3:
-                #ing_sub = st.button("Substitute for Ingredients")
             st.write("-" * 40)
+            if save_recipe:
+                os.makedirs('file', exist_ok=True)
+                log_file = f"file/recipe_hist_{st.session_state.username}.json"
+
+                if os.path.exists(log_file):
+                    with open(log_file, 'r') as f:
+                        try:
+                            memories = json.load(f)
+                        except json.JSONDecodeError:
+                            memories = []
+                else:
+                    memories = []
+                for recipe in recipes:
+                    recipe_hist = {
+                        "username": st.session_state.username,
+                        "date": datetime.now().date(),
+                        "recipe name": recipe['title'],
+                        "recipe id": recipe['id']
+                    }
+
+                    memories = [
+                        memory for memory in memories
+                        if not (
+                            memory['recipe id'] == recipe_hist['recipe id'] and
+                            memory['date'] == recipe_hist['date']
+                        )
+                    ]
+                    memories.append(recipe_hist)
+
+                with open(log_file, 'w') as f:
+                    json.dump(memories, f, indent=2)
+                st.success("Recipe successfully saved!")
+
+            
+            if shopping_cart:
+                os.makedirs('grocery_file', exist_ok=True)
+                log_file = f"grocery_file/prelim_shopping_list_{st.session_state.username}.json"
+
+                if os.path.exists(log_file):
+                    with open(log_file, 'r') as f:
+                        try:
+                            groceries = json.load(f)
+                        except json.JSONDecodeError:
+                            groceries = []
+                else:
+                    groceries = []
+                for recipe in recipes:
+                    grocery_list = {
+                        "recipe name": recipe['title'],
+                        "recipe id": recipe['id'],
+                        "ingredients": [ingredient['name'] for ingredient in recipe['missedIngredients']]
+                    }
+
+                    memories = [
+                        memory for memory in memories
+                        if not (
+                            groceries['recipe id'] == grocery_list['recipe id'] and
+                            groceries['recipe name'] == grocery_list['recipe name']
+                        )
+                    ]
+                    memories.append(grocery_list)
+
+                with open(log_file, 'w') as f:
+                    json.dump(memories, f, indent=2)
+                st.success("Ingredients added to Shopping List!")
+
+
     else:
         st.warning(f"Error: {response.status_code}")
         st.warning(response.text)
@@ -120,6 +187,7 @@ if st.session_state.username:
         diet = st.selectbox("Select your Diet Option", ["None", "Gluten Free", "Pescetarian", "Vegan", "Vegetarian", "Ketogenic"])
         if diet != 'None':
             recipe_search(search, diet = diet)
+        
         else:
             recipe_search(search)
 
