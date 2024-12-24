@@ -12,7 +12,7 @@ if 'username' in st.session_state:
     with open(file_path, 'r') as f:
         prelim_grocery = json.load(f)
     ingredients_data = []
-    st.write(prelim_grocery)
+    #st.write(prelim_grocery)
     for recipe in prelim_grocery:
         for ingredient in recipe['ingredients']:  
             ingredients_data.append({
@@ -21,7 +21,7 @@ if 'username' in st.session_state:
             })
 
     editable_data = st.data_editor(
-        ingredients_data,
+        prelim_grocery,
         column_config={
             "ingredient": st.column_config.TextColumn("Ingredient"),
             "picked_up": st.column_config.CheckboxColumn(
