@@ -17,6 +17,7 @@ if 'username' in st.session_state:
         for ingredient in recipe['ingredients']:   
             ingredients_data.append({
                 "username": recipe['username'],
+                "date": recipe['date'],
                 "recipe_name": recipe['recipe name'],  
                 "ingredient": ingredient,
                 "picked_up": False  
@@ -59,10 +60,11 @@ if 'username' in st.session_state:
         clear_list = st.button("Clear Cart", icon = '\U0001F5D1')
 
     if save_list:
-        editable_data.to_csv("recipes.csv", index=False)
+        editable_df = pd.DataFrame(editable_data)
+        editable_df.to_csv("recipes.csv", index=False)
         st.success("Grocery List has been saved!")
     if clear_list:
-        data = pd.DataFrame(columns=["username", "date", "recipe name", "recipe id", "ingredients", "In Cart"])
+        data = pd.DataFrame(columns=["username", "date", "recipe name", "ingredient", "picked_up"])
         st.session_state["data_editor"] = data
         st.experimental_rerun()
     
