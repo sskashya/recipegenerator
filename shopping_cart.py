@@ -66,7 +66,10 @@ if 'username' in st.session_state:
         editable_df.to_csv("recipes.csv", index=False)
         st.success("Grocery List has been saved!")
     if clear_list:
-        ingredients_data = []
+        ingredients_data.clear()
+        with open(file_path, 'w') as f:
+            json.dump([], f)  
+        st.success("Cart has been cleared!")  
     
     logout = st.button("Logout")
     if logout:
