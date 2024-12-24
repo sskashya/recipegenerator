@@ -1,5 +1,5 @@
 import streamlit as st
-#import openai
+from openai import OpenAI
 import requests
 import json
 import os
@@ -180,7 +180,15 @@ if 'username' in st.session_state:
     st.title("Welcome Back!")
     st.header("Here is your food joke of the day")
 
-    food_joke()
+    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+    messages = {"role":"system", "content": f"You are a knowledgeable and funny food bot. Give the chef a food and culinary related joke"}
+    response = client.chat.completions.create(
+            model="gpt-4o",
+            messages = messages,
+            stream = True,
+            temperature = 0
+            )
+
     st.write("-"*40)
 
     search = st.text_input("Search for meals here")
