@@ -16,12 +16,15 @@ if 'username' in st.session_state:
     for recipe in prelim_grocery:
         for ingredient in recipe['ingredients']:  
             ingredients_data.append({
+                "username": recipe['username'],
+                "recipe_name": recipe['title'],  
+                "recipe_id": recipe['id'],
                 "ingredient": ingredient,
                 "picked_up": False  
             })
 
     editable_data = st.data_editor(
-        prelim_grocery,
+        ingredients_data,
         column_config={
             "ingredient": st.column_config.TextColumn("Ingredient"),
             "picked_up": st.column_config.CheckboxColumn(
@@ -62,6 +65,7 @@ if 'username' in st.session_state:
     if clear_list:
         data = pd.DataFrame(columns=["username", "date", "recipe name", "recipe id", "ingredients", "In Cart"])
         st.session_state["data_editor"] = data
+        st.experimental_rerun()
     
     logout = st.button("Logout")
     if logout:
