@@ -16,7 +16,7 @@ if 'username' in st.session_state:
     for recipe in prelim_grocery:
         for ingredient in recipe['ingredients']:  
             ingredients_data.append({
-                "ingredient": ingredient['original'],
+                "ingredient": ingredient,
                 "picked_up": False  
             })
 
