@@ -119,7 +119,7 @@ def recipe_search(prompt, number=5, diet=None, exclude_ingredients=None, intoler
                     
                     recipe_hist = {
                         "username": st.session_state.username,
-                        "date": datetime.now().date(),
+                        "date": datetime.now().date().strftime('%Y-%m-%d'),
                         "recipe name": recipe['title'],
                         "recipe id": recipe['id']
                     }
@@ -153,7 +153,7 @@ def recipe_search(prompt, number=5, diet=None, exclude_ingredients=None, intoler
 
                     grocery_list = {
                         "username": st.session_state.username,
-                        "date": datetime.now().date(),
+                        "date": datetime.now().date().strftime('%Y-%m-%d'),
                         "recipe name": recipe['title'],
                         "recipe id": recipe['id'],
                         "ingredients": [ingredient['original'] for ingredient in recipe['missedIngredients']]
